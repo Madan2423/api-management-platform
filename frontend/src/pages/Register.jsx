@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { loginUser } from "../services/api";
+import { registerUser } from "../services/api";
 
 
-const Login = () => {
+const Register = () => {
 
     const navigate = useNavigate();
 
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -15,7 +16,7 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
 
 
-    const handleLogin = async (e) => {
+    const handleRegister = async (e) => {
 
         e.preventDefault();
 
@@ -24,44 +25,26 @@ const Login = () => {
 
         try {
 
-            const data = await loginUser(
+            await registerUser(
+                name,
                 email,
                 password
             );
 
-            /*
-             * Store token
-             */
-            localStorage.setItem(
-                "token",
-                data.token
+
+            alert(
+                "Registration successful. Please login."
             );
 
 
-            /*
-             * Store user
-             */
-            if (data.user) {
-
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(data.user)
-                );
-
-            }
-
-
-            /*
-             * Go to dashboard
-             */
-            navigate("/dashboard");
+            navigate("/login");
 
 
         } catch (error) {
 
             setError(
                 error.message ||
-                "Invalid email or password"
+                "Registration failed"
             );
 
         } finally {
@@ -86,11 +69,27 @@ const Login = () => {
 
 
                 <p style={styles.subtitle}>
-                    Sign in to manage your APIs
+                    Create your account
                 </p>
 
 
-                <form onSubmit={handleLogin}>
+                <form onSubmit={handleRegister}>
+
+                    <label style={styles.label}>
+                        Name
+                    </label>
+
+                    <input
+                        type="text"
+                        placeholder="Enter your name"
+                        value={name}
+                        onChange={(e) =>
+                            setName(e.target.value)
+                        }
+                        required
+                        style={styles.input}
+                    />
+
 
                     <label style={styles.label}>
                         Email
@@ -120,6 +119,7 @@ const Login = () => {
                             setPassword(e.target.value)
                         }
                         required
+                        minLength={6}
                         style={styles.input}
                     />
 
@@ -140,8 +140,8 @@ const Login = () => {
                     >
 
                         {loading
-                            ? "Logging in..."
-                            : "Login"
+                            ? "Creating Account..."
+                            : "Register"
                         }
 
                     </button>
@@ -149,17 +149,17 @@ const Login = () => {
                 </form>
 
 
-                <p style={styles.registerText}>
+                <p style={styles.loginText}>
 
-                    Don't have an account?{" "}
+                    Already have an account?{" "}
 
                     <span
                         onClick={() =>
-                            navigate("/register")
+                            navigate("/login")
                         }
-                        style={styles.registerLink}
+                        style={styles.loginLink}
                     >
-                        Register
+                        Login
                     </span>
 
                 </p>
@@ -247,14 +247,14 @@ const styles = {
     },
 
 
-    registerText: {
+    loginText: {
         textAlign: "center",
         marginTop: "25px",
         fontSize: "16px"
     },
 
 
-    registerLink: {
+    loginLink: {
         color: "#2563eb",
         cursor: "pointer",
         fontWeight: "bold"
@@ -263,4 +263,4 @@ const styles = {
 };
 
 
-export default Login;
+export default Register;

@@ -5,98 +5,79 @@ import {
     Navigate
 } from "react-router-dom";
 
-import Login from "./pages/Login";
 
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 
-import ApiManagement from "./pages/ApiManagement";
-
-import ApiKeys from "./pages/ApiKeys";
-
+import APIs from "./pages/APIs";
+import APIKeys from "./pages/APIKeys";
 import Monitoring from "./pages/Monitoring";
-
-
-const ProtectedRoute = ({ children }) => {
-
-    const token =
-        localStorage.getItem("token");
-
-
-    if (!token) {
-
-        return (
-            <Navigate
-                to="/login"
-                replace
-            />
-        );
-    }
-
-
-    return children;
-};
 
 
 const App = () => {
 
     return (
+
         <BrowserRouter>
 
             <Routes>
 
+                {/* Login */}
+
                 <Route
                     path="/login"
-                    element={
-                        <Login />
-                    }
+                    element={<Login />}
                 />
 
+
+                {/* Register */}
+
+                <Route
+                    path="/register"
+                    element={<Register />}
+                />
+
+
+                {/* Dashboard */}
 
                 <Route
                     path="/dashboard"
-                    element={
-                        <ProtectedRoute>
-                            <Dashboard />
-                        </ProtectedRoute>
-                    }
+                    element={<Dashboard />}
                 />
 
+
+                {/* APIs */}
 
                 <Route
                     path="/apis"
-                    element={
-                        <ProtectedRoute>
-                            <ApiManagement />
-                        </ProtectedRoute>
-                    }
+                    element={<APIs />}
                 />
 
+
+                {/* API Keys */}
 
                 <Route
-                    path="/apis/:apiId/keys"
-                    element={
-                        <ProtectedRoute>
-                            <ApiKeys />
-                        </ProtectedRoute>
-                    }
+                    path="/keys"
+                    element={<APIKeys />}
                 />
 
+
+                {/* Monitoring */}
 
                 <Route
                     path="/monitoring"
-                    element={
-                        <ProtectedRoute>
-                            <Monitoring />
-                        </ProtectedRoute>
-                    }
+                    element={<Monitoring />}
                 />
 
 
+                {/* Default */}
+
                 <Route
-                    path="/"
+                    path="*"
                     element={
                         <Navigate
-                            to="/dashboard"
+                            to="/login"
                             replace
                         />
                     }
@@ -105,6 +86,7 @@ const App = () => {
             </Routes>
 
         </BrowserRouter>
+
     );
 };
 
