@@ -11,7 +11,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 
 import APIs from "./pages/APIs";
-import APIKeys from "./pages/APIKeys";
+import APIKeys from "./pages/ApiKeys";
 import Monitoring from "./pages/Monitoring";
 
 
